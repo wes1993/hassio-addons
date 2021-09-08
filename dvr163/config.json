@@ -1,0 +1,58 @@
+{
+  "name": "Eseenet/dvr163 NVR",
+  "image": "pgross41/dvr163-hass-{arch}",
+  "version": "0.2",
+  "description": "Home Assistant Add-on for interacting with Eseenet/dvr163 NVR",
+  "slug": "dvr163",
+  "url": "https://github.com/pgross41/dvr163-hass",
+  "startup": "application",
+  "boot": "auto",
+  "homeassistant_api": "true",
+  "options": {
+    "log_level": 20,
+    "home_assistant": {
+      "enabled": false,
+      "post_to": "services/script/handle_dvr163_email"
+    },
+    "dropbox": {
+      "enabled": false,
+      "access_token": ""
+    },
+    "email": {
+      "enabled": false,
+      "host": "smtp.gmail.com",
+      "port": 587,
+      "username": "user@gmail.com",
+      "password": ""
+    }
+  },
+  "schema": {
+    "log_level": "int",
+    "home_assistant": {
+      "enabled": "bool",
+      "post_to": "str?"
+    },
+    "dropbox": {
+      "enabled": "bool",
+      "access_token": "str?"
+    },
+    "email": {
+      "enabled": "bool",
+      "host": "str?",
+      "port": "int?",
+      "username": "str?",
+      "password": "str?"
+    }
+  },
+  "ports": {
+    "25/tcp": 25,
+    "8080/tcp": 8080
+  },
+  "arch": [
+    "amd64",
+    "armv7",
+    "armhf",
+    "i386",
+    "aarch64"
+  ]
+}

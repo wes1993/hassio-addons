@@ -1,0 +1,18 @@
+# Test commands for sending an email via telnet
+# Cannot be copy/pasted all at once, each command must be entered into telnet session
+
+telnet localhost 25
+ehlo hass
+AUTH PLAIN AGhhc3MAaGFzcw==
+mail from: hass
+rcpt to: hass
+data
+Subject: test
+This is a test email
+.
+quit 
+
+#######################
+
+printf '\0%s\0%s' 'hass' 'hass' | openssl base64
+AGhhc3MAaGFzcw==

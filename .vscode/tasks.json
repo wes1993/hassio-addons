@@ -1,0 +1,118 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Start Home Assistant",
+      "type": "shell",
+      "command": "./.devcontainer/supervisor.sh",
+      "group": {
+        "kind": "test",
+        "isDefault": true,
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Home Assistant CLI",
+      "type": "shell",
+      "command": "docker exec -ti hassio_cli /usr/bin/cli.sh",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "docker-bash",
+      "type": "shell",
+      "command": "docker run --rm -it --entrypoint bash dvr163-hass:latest",
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Run",
+      "type": "shell",
+      "command": "docker run --rm -p=25:25 -e OPTIONS_PATH=/app/dev/env/options.json -p=8080:8080 --name=dvr163-hass dvr163-hass:latest",
+      "dependsOn": [
+        "Docker: Build"
+      ],
+      "group": "test",
+      "presentation": {
+        "reveal": "always",
+        "panel": "new"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Docker: Build",
+      "type": "docker-build",
+      "platform": "python",
+      "dockerBuild": {
+        "tag": "dvr163-hass:latest",
+        "dockerfile": "${workspaceFolder}/dvr163/Dockerfile",
+        "context": "${workspaceFolder}",
+        "pull": true
+      }
+    },
+    {
+      "label": "Docker: Run Flask",
+      "type": "docker-run",
+      "dependsOn": [
+        "Docker: Build"
+      ],
+      "dockerRun": {
+        "volumes": [
+          {
+            "localPath": "${workspaceFolder}\\dvr163\\app",
+            "containerPath": "/app"
+          }
+        ],
+        "env": {
+          "FLASK_APP": "/app/main.py",
+          "FLASK_ENV": "development",
+          "OPTIONS_PATH": "/app/dev/env/options.json"
+        }
+      },
+      "python": {
+        "args": [
+          "run",
+          "--host",
+          "0.0.0.0",
+          "--port",
+          "8080"
+        ],
+        "module": "flask"
+      }
+    },
+    {
+      "label": "Docker: Run handle_email.py",
+      "type": "docker-run",
+      "dependsOn": [
+        "Docker: Build"
+      ],
+      "dockerRun": {
+        "env": {
+          "OPTIONS_PATH": "/app/dev/env/options.json",
+          "SUPERVISOR_TOKEN": "if.changed.do.not.commit",
+          "HASS_API_BASE_URL": "http://192.168.1.2:8123/api/",
+        }
+      },
+      "python": {
+        "file": "/app/handle_email.py",
+        "args": [
+          "/app/dev/dvr163-email.txt"
+        ]
+      }
+    }
+  ]
+}
