@@ -1,5 +1,7 @@
 # Changelog
+## 0.3
 
+- Video DEV
 ## 0.2
 
 - Support Home Assistant action
