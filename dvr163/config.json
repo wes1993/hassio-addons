@@ -1,7 +1,7 @@
 {
   "name": "Eseenet/dvr163 NVR DEV",
   "image": "pgross41/dvr163-hass-{arch}",
-  "version": "0.1",
+  "version": "0.2",
   "description": "Home Assistant Add-on for interacting with Eseenet/dvr163 NVR",
   "slug": "dvr163",
   "url": "https://github.com/wes1993/hassio-addons",
