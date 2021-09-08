@@ -1,8 +1,8 @@
 {
     "log_level": 10,
     "nvr": {
-        "ip": "192.168.1.88",
-        "port": 8808
+        "ip": "192.168.0.20",
+        "port": 80
     },
     "home_assistant": {
         "enabled": true,
